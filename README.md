@@ -19,7 +19,7 @@ A geography guessing game where users get cryptic clues about famous destination
   - [Radix UI](https://www.radix-ui.com/) for accessible components
   - [Lucide Icons](https://lucide.dev/) for beautiful icons
 - **Effects**: [Canvas Confetti](https://www.npmjs.com/package/canvas-confetti) for celebration animations
-- **Backend**: Django
+- **Backend**: [Django](https://github.com/FaizAlam/globetrottler-backend)
 - **Database**: Redis
 
 ## 📦 Installation
