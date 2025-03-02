@@ -75,16 +75,17 @@ export function GameContainer() {
     setSelectedAnswer(answer)
 
     try {
-      const result = await submitAnswer(username || "anonymous", currentQuestion.question_id, answer)
+      const randomName = `guest_${Math.random().toString(36).substring(2, 10)}`;
+      const result = await submitAnswer(username || randomName, currentQuestion.question_id, answer)
 
       setAnswerResult(result)
       // setScore({result.score})
       setScore({ correct: parseInt(result.score.correct), incorrect: parseInt(result.score.incorrect)});
 
       // Save score to localStorage if user is registered
-      if (username) {
-        localStorage.setItem(`globetrotter-score-${username}`, JSON.stringify(score))
-      }
+      const scoreKey = username ? `globetrotter-score-${username}` : `globetrotter-score-${randomName}`;
+      localStorage.setItem(scoreKey, JSON.stringify(score))
+      
     } catch (error) {
       toast({
         title: "Error",
