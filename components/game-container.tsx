@@ -22,7 +22,7 @@ export function GameContainer() {
   const [username, setUsername] = useState<string | null>(null)
   const { toast } = useToast()
   const effectRun = useRef(false);
-  const randomUserName = `guest_${Math.random().toString(36).substring(2, 10)}`;
+  const randomUserName = useRef(`guest_${Math.random().toString(36).substring(2, 10)}`);
 
   useEffect(() => {
     if (!effectRun.current) {
@@ -37,7 +37,6 @@ export function GameContainer() {
         else{
           getUserDetails(storedUsername).then((data) => {
             // setScore(data.score);.
-            console.log("data", data);
             setScore({ correct: parseInt(data.correct), incorrect: parseInt(data.incorrect)});
             localStorage.setItem(`globetrotter-score-${username}`, JSON.stringify(score))
           }
@@ -46,7 +45,7 @@ export function GameContainer() {
         }
       }
       
-      localStorage.setItem("globetrotter-username", username || randomUserName);
+      localStorage.setItem("globetrotter-username", username || randomUserName.current);
       loadNewQuestion();  
       effectRun.current = true; // Mark that the effect has run
     }
@@ -77,14 +76,14 @@ export function GameContainer() {
     setSelectedAnswer(answer)
 
     try {
-      const result = await submitAnswer(username || randomUserName, currentQuestion.question_id, answer)
+      const result = await submitAnswer(username || randomUserName.current, currentQuestion.question_id, answer)
 
       setAnswerResult(result)
       // setScore({result.score})
       setScore({ correct: parseInt(result.score.correct), incorrect: parseInt(result.score.incorrect)});
 
       // Save score to localStorage if user is registered
-      const scoreKey = username ? `globetrotter-score-${username}` : `globetrotter-score-${randomUserName}`;
+      const scoreKey = username ? `globetrotter-score-${username}` : `globetrotter-score-${randomUserName.current}`;
       localStorage.setItem(scoreKey, JSON.stringify(score))
       
     } catch (error) {
